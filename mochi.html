@@ -188,8 +188,13 @@ body {
   const W = 380, H = 500;
   const canvas = document.getElementById('kp-canvas');
   const ctx = canvas.getContext('2d');
-  canvas.width = W;
-  canvas.height = H;
+  // Sharpen on retina / high-DPI screens: make the backing store
+  // match the device's physical pixel count, then scale the drawing
+  // context so all game code keeps using the logical W x H grid.
+  const DPR = Math.max(1, window.devicePixelRatio || 1);
+  canvas.width = W * DPR;
+  canvas.height = H * DPR;
+  ctx.scale(DPR, DPR);
 
   const WALLPAPERS = [
     { id: 'peach', name: 'Peach Dreams', cost: 0, bg: '#FFF5E6', cloud: '#FDE4D0', accent: null },
